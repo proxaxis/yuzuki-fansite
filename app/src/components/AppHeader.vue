@@ -9,22 +9,19 @@ const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-watch(isMenuOpen, (isOpen) => {
-  if (isOpen) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = '';
-  }
-});
-
 const handleNavClick = (e) => {
   const link = e.currentTarget;
+  const href = link.getAttribute('href') || '';
 
   if (isMenuOpen.value) {
     toggleMenu();
   }
 
-  const targetId = link.getAttribute('href');
+  if (!href.includes('#')) {
+    return;
+  }
+
+  const targetId = href.slice(href.indexOf('#'));
   const targetElement = document.querySelector(targetId);
 
   if (targetElement) {
@@ -39,11 +36,22 @@ const handleNavClick = (e) => {
     });
   }
 };
+
+watch(
+  () => isMenuOpen.value,
+  (isOpen) => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  },
+);
 </script>
 
 <template>
   <header ref="rfHeader">
-    <div>YUZUKI</div>
+    <a href="/#hero" @click="handleNavClick">YUZUKI</a>
 
     <button type="button" aria-label="メニューを開閉する" :class="{ active: isMenuOpen }" @click="toggleMenu">
       <span></span>
@@ -52,10 +60,11 @@ const handleNavClick = (e) => {
 
     <nav :class="{ active: isMenuOpen }">
       <ul>
-        <li><a href="#hero" @click="handleNavClick">HOME</a></li>
-        <li><a href="#profile" @click="handleNavClick">PROFILE</a></li>
-        <li><a href="#gallery" @click="handleNavClick">GALLERY</a></li>
-        <li><a href="#sns" @click="handleNavClick">CONNECT</a></li>
+        <li><a href="/#hero" @click="handleNavClick">HOME</a></li>
+        <li><a href="/#profile" @click="handleNavClick">PROFILE</a></li>
+        <li><a href="/#gallery" @click="handleNavClick">GALLERY</a></li>
+        <li><a href="/#sns" @click="handleNavClick">CONNECT</a></li>
+        <li><a href="/member" @click="handleNavClick">MEMBER</a></li>
       </ul>
     </nav>
   </header>
@@ -80,7 +89,7 @@ header {
   box-sizing: border-box;
 
   // ロゴ
-  & > div {
+  & > a {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 1.4rem;
@@ -153,6 +162,7 @@ header {
       background: none;
       backdrop-filter: none;
       display: block;
+      margin-right: 1rem;
     }
 
     ul {

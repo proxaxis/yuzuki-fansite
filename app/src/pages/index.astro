@@ -104,9 +104,8 @@ import ImageSignature from '@/assets/images/index_signature.png';
     <section id="sns">
       <h2>CONNECT</h2>
       <div>
-        <LinkCard href="https://twitter.com" type="xtwitter" />
-        <LinkCard href="https://instagram.com" type="instagram" />
-        <LinkCard href="https://example.com" type="others" />
+        <LinkCard href="https://x.com/yuuuuuyuuuuuuu" type="xtwitter" />
+        <LinkCard href="https://www.instagram.com/moontiara_yuzuki/" type="instagram" />
       </div>
     </section>
   </main>
@@ -415,29 +414,17 @@ import ImageSignature from '@/assets/images/index_signature.png';
         }
 
         // 季節ごとの属性に応じたスタイリング
-        &[data-season='spring'] {
-          border-top: 6px solid var(--accent);
-          footer {
-            color: var(--accent);
-          }
+        &[data-season='spring'] footer {
+          color: var(--accent);
         }
-        &[data-season='summer'] {
-          border-top: 6px solid color-mix(in srgb, var(--blue-1), #000000 15%);
-          footer {
-            color: color-mix(in srgb, var(--blue-1), #000000 15%);
-          }
+        &[data-season='summer'] footer {
+          color: color-mix(in srgb, var(--blue-1), #000000 11%);
         }
-        &[data-season='autumn'] {
-          border-top: 6px solid #f2cfb3;
-          footer {
-            color: #c48b5e;
-          }
+        &[data-season='autumn'] footer {
+          color: #c48b5e;
         }
-        &[data-season='winter'] {
-          border-top: 6px solid #ccd8e0;
-          footer {
-            color: #7f95a3;
-          }
+        &[data-season='winter'] footer {
+          color: #7f95a3;
         }
       }
     }

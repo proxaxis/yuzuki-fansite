@@ -9,6 +9,8 @@ $size: (
   breakpoint: 768px,
   content-max-width: 1200px,
   content-min-width: 320px,
+  border-radius-sm: 4px,
+  border-radius-md: 6px,
 );
 
 @mixin spread-size-vars() {

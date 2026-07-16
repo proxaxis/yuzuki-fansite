@@ -1,24 +1,3 @@
-<template>
-  <Transition name="fade">
-    <div v-if="isLoading" class="loader-container">
-      <div class="magic-circle-wrapper">
-        <svg viewBox="0 0 200 200" class="magic-svg">
-          <circle cx="100" cy="100" r="85" class="outer-ring" />
-          <circle cx="100" cy="100" r="70" class="inner-ring" />
-
-          <g class="magic-particles">
-            <circle v-for="n in particleCount" :key="n" :cx="getParticleX(n)" :cy="getParticleY(n)" :r="getParticleRadius(n)" :style="getParticleStyle(n)" class="particle" />
-          </g>
-
-          <circle cx="100" cy="100" r="8" class="magic-core" />
-        </svg>
-
-        <p class="loading-text">Spelling...</p>
-      </div>
-    </div>
-  </Transition>
-</template>
-
 <script setup>
 import { ref, onMounted } from 'vue';
 
@@ -71,6 +50,27 @@ onMounted(() => {
   }, 3000);
 });
 </script>
+
+<template>
+  <Transition name="fade">
+    <div v-if="isLoading" class="loader-container">
+      <div class="magic-circle-wrapper">
+        <svg viewBox="0 0 200 200" class="magic-svg">
+          <circle cx="100" cy="100" r="85" class="outer-ring" />
+          <circle cx="100" cy="100" r="70" class="inner-ring" />
+
+          <g class="magic-particles">
+            <circle v-for="n in particleCount" :key="n" :cx="getParticleX(n)" :cy="getParticleY(n)" :r="getParticleRadius(n)" :style="getParticleStyle(n)" class="particle" />
+          </g>
+
+          <circle cx="100" cy="100" r="8" class="magic-core" />
+        </svg>
+
+        <p class="loading-text">Spelling...</p>
+      </div>
+    </div>
+  </Transition>
+</template>
 
 <style lang="scss" scoped>
 .loader-container {
