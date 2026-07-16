@@ -1,0 +1,14 @@
+services:
+  app:
+    image: node:24.12.0
+    container_name: yuzuki_fansite_app
+    user: node
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./app:/app
+    ports:
+      - "4321:4321"
+    command: sleep infinity

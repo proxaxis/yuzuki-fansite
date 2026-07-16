@@ -1,0 +1,145 @@
+@use 'sass:color';
+@use './_variable.scss' as var;
+
+// フォント設定
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap'); // 'Noto Sans JP'
+@import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap'); // 'Kosugi Maru'
+@import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono'); // 'Ubuntu Mono'
+@import url('https://fonts.googleapis.com/css?family=Sawarabi+Mincho'); // 'Sawarabi Mincho'
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c'); // 'M PLUS Rounded 1c'
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+1p'); // 'M PLUS 1p'
+@import url('https://fonts.googleapis.com/css?family=Sawarabi+Gothic'); // 'Sawarabi Gothic'
+@import url('https://fonts.googleapis.com/css?family=Kosugi'); // 'Kosugi'
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+JP'); // 'Noto Serif JP'
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP'); // 'Noto Sans JP'
+
+// 共通関数
+@mixin wide($bp: map-get(var.$size, breakpoint)) {
+  @media (min-width: $bp) {
+    @content;
+  }
+}
+
+// 一般設定
+:root {
+  color-scheme: light;
+  @include var.spread-color-vars();
+  @include var.spread-size-vars();
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  zoom: 1;
+}
+
+html {
+  font-family: 'M PLUS Rounded 1c', 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: var(--white);
+  color: var(--text-1);
+  width: 100%;
+  margin: 0 auto;
+  interpolate-size: allow-keywords;
+  overscroll-behavior-x: none !important;
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+    overflow-x: hidden;
+}
+
+// 個別設定
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+p,
+li,
+span {
+  font-size: 1rem;
+}
+
+a {
+  transition: all 0.3s ease;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  // 画像の選択や長押しメニューのポップアップを禁止する
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  // ドラッグ＆ドロップによる画像の保存や移動を禁止する
+  backface-visibility: hidden;
+  -webkit-user-drag: none;
+}
+
+button {
+  &,
+  &:hover,
+  &:active {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    color: var(--text);
+  }
+}
+
+a,
+a:active,
+a:visited {
+  color: var(--text);
+  text-decoration: none;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem 0;
+}
+
+details {
+  summary {
+    user-select: none;
+  }
+
+  .container {
+    margin-top: 0.7rem;
+  }
+
+  &::details-content {
+    overflow: clip;
+    height: 0;
+    transition:
+      height 300ms ease,
+      border 300ms ease,
+      content-visibility 300ms ease allow-discrete;
+  }
+
+  &[open] {
+    &::details-content {
+      height: auto;
+    }
+    summary {
+      color: var(--accent);
+    }
+  }
+}
+
+.container {
+  max-width: var(--content-max-width);
+  min-width: var(--content-min-width);
+  margin: 0 auto;
+}

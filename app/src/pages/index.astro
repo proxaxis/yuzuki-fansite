@@ -1,0 +1,463 @@
+---
+import '@/styles/global.scss';
+import { Image } from 'astro:assets';
+import { IMAGE_SIZES } from '@/lib/constants.js';
+import Layout from '@/layouts/Layout.astro';
+import LoadingModal from '@/components/LoadingModal.vue';
+import AppHeader from '@/components/AppHeader.vue';
+import LinkCard from '@/components/LinkCard.vue';
+import ImageHero from '@/assets/images/index_hero.png';
+import ImageAutumn from '@/assets/images/index_autumn.png';
+import ImageSpring from '@/assets/images/index_spring.png';
+import ImageSummer from '@/assets/images/index_summer.png';
+import ImageWinter from '@/assets/images/index_winter.png';
+import ImageSignature from '@/assets/images/index_signature.png';
+---
+
+<Layout>
+  <LoadingModal client:load />
+  <AppHeader client:load />
+
+  <main>
+    <section id="hero">
+      <div>
+        <div>
+          <Image src={ImageHero} alt="柚月のメインビジュアル" width={IMAGE_SIZES.lg.width} height={IMAGE_SIZES.lg.height} />
+        </div>
+      </div>
+      <div>
+        <p>おはよう、最高の私</p>
+        <h1>柚月 <span>YUZUKI</span></h1>
+      </div>
+    </section>
+
+    <section id="profile">
+      <h2>PROFILE</h2>
+
+      <article>
+        <figure>
+          <Image src={ImageSignature} alt="柚月のサイン" width={200} height={200} />
+        </figure>
+
+        <dl>
+          <div>
+            <dt>Birthday</dt>
+            <dd>1月9日</dd>
+          </div>
+          <div>
+            <dt>Blood Type</dt>
+            <dd>AB型</dd>
+          </div>
+          <div>
+            <dt>Hometown</dt>
+            <dd>香港</dd>
+          </div>
+          <div>
+            <dt>Specialty</dt>
+            <dd>ヘアメイク</dd>
+          </div>
+        </dl>
+      </article>
+    </section>
+
+    <section id="gallery">
+      <h2>FOUR SEASONS</h2>
+      <div>
+        <article data-season="spring">
+          <div>
+            <Image src={ImageSpring} alt="春の柚月" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
+          </div>
+          <footer>
+            <span>SPRING</span>
+          </footer>
+        </article>
+
+        <article data-season="summer">
+          <div>
+            <Image src={ImageSummer} alt="夏の柚月" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
+          </div>
+          <footer>
+            <span>SUMMER</span>
+          </footer>
+        </article>
+
+        <article data-season="autumn">
+          <div>
+            <Image src={ImageAutumn} alt="秋の柚月" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
+          </div>
+          <footer>
+            <span>AUTUMN</span>
+          </footer>
+        </article>
+
+        <article data-season="winter">
+          <div>
+            <Image src={ImageWinter} alt="冬の柚月" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
+          </div>
+          <footer>
+            <span>WINTER</span>
+          </footer>
+        </article>
+      </div>
+    </section>
+
+    <section id="sns">
+      <h2>CONNECT</h2>
+      <div>
+        <LinkCard href="https://twitter.com" type="xtwitter" />
+        <LinkCard href="https://instagram.com" type="instagram" />
+        <LinkCard href="https://example.com" type="others" />
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 監視対象にする要素（セクションとギャラリーカード）
+    const targets = document.querySelectorAll('section, #gallery article');
+
+    // Intersection Observerのオプション（画面に15%入ったら実行）
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15,
+    };
+
+    const showElement = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          // 一度表示されたら監視を解除
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(showElement, observerOptions);
+
+    // 初期スタイル（フェードインの準備）を適用して監視開始
+    targets.forEach((target) => {
+      // ヒーローセクション（メインビジュアル）は最初から表示させる
+      if (target.id === 'hero') {
+        target.style.opacity = '1';
+        target.style.transform = 'translateY(0)';
+        return;
+      }
+
+      target.style.opacity = '0';
+      target.style.transform = 'translateY(40px)';
+      target.style.transition = 'opacity 1s cubic-bezier(0.215, 0.610, 0.355, 1), transform 1s cubic-bezier(0.215, 0.610, 0.355, 1)';
+
+      observer.observe(target);
+    });
+  });
+</script>
+
+<style lang="scss">
+  @use '../styles/global.scss' as *;
+
+  section {
+    padding: 5rem 1rem;
+    text-align: center;
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--blue-1);
+      margin-bottom: 40px;
+      letter-spacing: 0.15em;
+      position: relative;
+      display: inline-block;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 24px;
+        height: 6px;
+        border-radius: 3px;
+        background-color: var(--accent);
+      }
+    }
+  }
+
+  // メインビジュアル
+  #hero {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 70px 0 0 0;
+    background: linear-gradient(135deg, var(--blue-1) 0%, var(--white) 50%, rgba(var(--accent), 0.2) 100%);
+
+    @include wide {
+      flex-direction: row;
+      padding-top: 0;
+      height: 100vh;
+    }
+
+    // 画像エリア
+    > div:first-of-type {
+      width: 100%;
+      height: 55vh;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @include wide {
+        width: 50%;
+        height: 100vh;
+        padding: 8rem 3rem 3rem;
+      }
+
+      div {
+        width: auto;
+        height: 100%;
+        aspect-ratio: 3 / 4;
+        background-color: var(--blue-1);
+        border-radius: 2rem;
+        overflow: hidden;
+        box-shadow: 0 15px 35px var(--blue-1);
+        border: 6px solid var(--white);
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    // テキストエリア
+    > div:last-of-type {
+      padding: 3rem 1rem 5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      @include wide {
+        width: 50%;
+        height: 100vh;
+        padding: 8rem 3rem 3rem;
+        text-align: left;
+        align-items: flex-start;
+      }
+
+      p {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: var(--accent);
+        background: rgba(var(--white), 0.8);
+        border-bottom: 1px solid var(--accent);
+        margin-bottom: 0.9375rem;
+        display: inline-block;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--text-1);
+
+        span {
+          display: block;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.2rem;
+          font-weight: 300;
+          color: var(--blue-1);
+          letter-spacing: 0.3em;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+
+  // プロフィール
+  #profile {
+    article {
+      background: var(--white);
+      border: 3px solid var(--blue-1);
+      border-radius: 2rem;
+      padding: 40px 24px;
+      max-width: 750px;
+      margin: 0 auto;
+      box-shadow: 0 10px 30px var(--blue-1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+
+      @include wide {
+        flex-direction: row;
+        padding: 40px;
+        gap: 40px;
+      }
+
+      // サイン画像 (正方形 1:1)
+      figure {
+        width: 150px;
+        height: 150px;
+        flex-shrink: 0;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 2px dashed var(--blue-1);
+        padding: 6px;
+        background: var(--white);
+
+        @include wide {
+          width: 180px;
+          height: 180px;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 14px;
+        }
+      }
+
+      // プロフィール項目
+      dl {
+        flex-grow: 1;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+
+        @include wide {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px 30px;
+        }
+
+        div {
+          border-bottom: 2px dashed var(--blue-1);
+          padding-bottom: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          dt {
+            font-weight: 700;
+            color: var(--blue-1);
+            font-size: 0.9rem;
+          }
+
+          dd {
+            font-weight: 500;
+            color: var(--text-1);
+          }
+        }
+      }
+    }
+  }
+
+  // ギャラリー
+  #gallery {
+    background-color: var(--blue-0);
+
+    // グリッドコンテナ
+    > div {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+      max-width: 1000px;
+      margin: 0 auto;
+
+      @include wide {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+      }
+
+      article {
+        background: var(--white);
+        border-radius: 2rem;
+        overflow: hidden;
+        box-shadow: 0 8px 24px var(--blue-1);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        border: 3px solid var(--white);
+
+        &:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 30px var(--blue-1);
+        }
+
+        // 画像ボックス (3:4)
+        div {
+          width: 100%;
+          aspect-ratio: 3 / 4;
+          background-color: var(--blue-1);
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        // 四季のテキストエリア
+        footer {
+          padding: 12px;
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 700;
+          font-size: 0.9rem;
+          letter-spacing: 0.1em;
+        }
+
+        // 季節ごとの属性に応じたスタイリング
+        &[data-season='spring'] {
+          border-top: 6px solid var(--accent);
+          footer {
+            color: var(--accent);
+          }
+        }
+        &[data-season='summer'] {
+          border-top: 6px solid color-mix(in srgb, var(--blue-1), #000000 15%);
+          footer {
+            color: color-mix(in srgb, var(--blue-1), #000000 15%);
+          }
+        }
+        &[data-season='autumn'] {
+          border-top: 6px solid #f2cfb3;
+          footer {
+            color: #c48b5e;
+          }
+        }
+        &[data-season='winter'] {
+          border-top: 6px solid #ccd8e0;
+          footer {
+            color: #7f95a3;
+          }
+        }
+      }
+    }
+  }
+
+  // SNSリンク
+  #sns {
+    // ボタンの並びエリア
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+
+      @include wide {
+        flex-direction: row;
+        justify-content: center;
+        gap: 25px;
+      }
+    }
+  }
+</style>

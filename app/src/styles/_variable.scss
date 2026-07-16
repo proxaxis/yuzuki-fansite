@@ -1,0 +1,35 @@
+@use 'sass:color';
+@use 'sass:map';
+
+// サイズ定数
+$size: (
+  border-radius: 6px,
+  footer-height: 71px,
+  header-height: 63px,
+  breakpoint: 768px,
+  content-max-width: 1200px,
+  content-min-width: 320px,
+);
+
+@mixin spread-size-vars() {
+  @each $key, $value in $size {
+    --#{$key}: #{$value};
+  }
+}
+
+// カラーコード定数
+$colors: (
+  white: #ffffff,
+  text-0: #83979e,
+  text-1: #4a585c,
+  blue-0: #eef7fa,
+  blue-1: #b3dfec,
+  blue-2: #629bb0,
+  accent: #fbc6d0
+);
+
+@mixin spread-color-vars() {
+  @each $key, $value in $colors {
+    --#{$key}: #{$value};
+  }
+}
