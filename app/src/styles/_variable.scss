@@ -10,7 +10,8 @@ $size: (
   content-max-width: 1200px,
   content-min-width: 320px,
   border-radius-sm: 4px,
-  border-radius-md: 6px,
+  border-radius-lg: 32px,
+  border: 3px
 );
 
 @mixin spread-size-vars() {

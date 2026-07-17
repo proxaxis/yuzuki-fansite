@@ -62,19 +62,6 @@ const logout = async () => {
   <div class="auth">
     <LoadingSpinner v-if="isLoading" />
 
-    <div class="auth-status" v-if="!isLoading">
-      <p data-status="authenticated" v-if="user">
-        <IconCheck size="1.8rem" />
-        <span>YOU ARE AUTHENTICATED</span>
-      </p>
-
-      <p data-status="not-authenticated" v-else>
-        <IconXMark size="1.8rem" />
-        <span>YOU ARE NOT AUTHENTICATED</span>
-      </p>
-    </div>
-
-
     <p class="error" v-if="!isLoading && errorMsg">{{ errorMsg }}</p>
 
     <div v-if="!isLoading && !errorMsg && user">
@@ -111,33 +98,6 @@ $not-authenticated-color: red;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  .auth-status p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid currentColor;
-    border-radius: var(--border-radius-sm);
-    width: 100%;
-    max-width: 30rem;
-    margin: 0 auto;
-
-    span {
-      font-size: 1.5rem;
-    }
-
-    &[data-status='authenticated'] {
-      fill: $authenticated-color;
-      color: $authenticated-color;
-    }
-
-    &[data-status='not-authenticated'] {
-      fill: $not-authenticated-color;
-      color: $not-authenticated-color;
-    }
   }
 
   .error {
