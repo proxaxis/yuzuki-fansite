@@ -1,5 +1,7 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+
+const { title, description, image = '/default-ogp.png', canonicalURL = new URL(Astro.url.pathname, Astro.site) } = Astro.props;
 ---
 
 <!doctype html>
@@ -10,11 +12,29 @@ import Analytics from '@vercel/analytics/astro';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>YUZUKI - 柚月</title>
+
+    <!-- 基本メタタグ -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
     <Analytics />
   </head>
   <body>
-
     <slot />
 
     <footer>
@@ -24,7 +44,7 @@ import Analytics from '@vercel/analytics/astro';
 </html>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('img').forEach((img) => {
       img.addEventListener('contextmenu', (e) => e.preventDefault());
       img.addEventListener('dragstart', (e) => e.preventDefault());
