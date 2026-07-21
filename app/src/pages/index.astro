@@ -13,9 +13,14 @@ import ImageSummer from '@/assets/images/index_summer.png';
 import ImageWinter from '@/assets/images/index_winter.png';
 import ImageSignature from '@/assets/images/index_signature.png';
 import IconAward from '@/components/icons/IconAward.vue';
+import { useTranslations } from '@/i18n/utils.ts';
+
+const { currentLocale } = Astro;
+const lang = (currentLocale || 'ja') as 'ja' | 'yue';
+const t = useTranslations(lang);
 ---
 
-<Layout title="柚月 - YUZUKI" description="柚月のウェブサイトです。本人のビジュアルイメージや、四季の写真、活動情報などを発信しています。">
+<Layout title="柚月 - YUZUKI" description={t('index.description')}>
   <LoadingModal client:load />
   <AppHeader client:load />
 
@@ -23,12 +28,15 @@ import IconAward from '@/components/icons/IconAward.vue';
     <section id="hero">
       <div>
         <div>
-          <Image src={ImageHero} alt="柚月のメインビジュアル" width={IMAGE_SIZES.lg.width} height={IMAGE_SIZES.lg.height} />
+          <Image src={ImageHero} alt="YUZUKI's Main Visual" width={IMAGE_SIZES.lg.width} height={IMAGE_SIZES.lg.height} />
         </div>
       </div>
       <div>
-        <p>おはよう、最高の私</p>
-        <h1>柚月 <span>YUZUKI</span></h1>
+        <p>{t('index.hero')}</p>
+        <h1>
+          <span>柚月</span>
+          <span>YUZUKI</span>
+        </h1>
       </div>
     </section>
 
@@ -38,7 +46,7 @@ import IconAward from '@/components/icons/IconAward.vue';
       <dl>
         <div>
           <IconAward size="2rem" />
-          <dt>ビューティー・コーディネーター</dt>
+          <dt>{t('index.certification.beauty')}</dt>
           <dd>3 級</dd>
           <time>2026.07.17</time>
         </div>
@@ -50,7 +58,7 @@ import IconAward from '@/components/icons/IconAward.vue';
 
       <article>
         <figure>
-          <Image src={ImageSignature} alt="柚月のサイン" width={200} height={200} />
+          <Image src={ImageSignature} alt="YUZUKI's Signature" width={200} height={200} />
         </figure>
 
         <dl>
@@ -68,7 +76,7 @@ import IconAward from '@/components/icons/IconAward.vue';
           </div>
           <div>
             <dt>Specialty</dt>
-            <dd>ヘアメイク</dd>
+            <dd>{t('index.profile.specialty')}</dd>
           </div>
         </dl>
       </article>
@@ -79,7 +87,7 @@ import IconAward from '@/components/icons/IconAward.vue';
       <div>
         <article data-season="spring">
           <div>
-            <Image src={ImageSpring} alt="春の柚月" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
+            <Image src={ImageSpring} alt="Spring YUZUKI" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
           </div>
           <footer>
             <span>SPRING</span>
@@ -88,7 +96,7 @@ import IconAward from '@/components/icons/IconAward.vue';
 
         <article data-season="summer">
           <div>
-            <Image src={ImageSummer} alt="夏の柚月" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
+            <Image src={ImageSummer} alt="Summer YUZUKI" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
           </div>
           <footer>
             <span>SUMMER</span>
@@ -97,7 +105,7 @@ import IconAward from '@/components/icons/IconAward.vue';
 
         <article data-season="autumn">
           <div>
-            <Image src={ImageAutumn} alt="秋の柚月" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
+            <Image src={ImageAutumn} alt="Autumn YUZUKI" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
           </div>
           <footer>
             <span>AUTUMN</span>
@@ -106,7 +114,7 @@ import IconAward from '@/components/icons/IconAward.vue';
 
         <article data-season="winter">
           <div>
-            <Image src={ImageWinter} alt="冬の柚月" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
+            <Image src={ImageWinter} alt="Winter YUZUKI" width={IMAGE_SIZES.sm.width} height={IMAGE_SIZES.sm.height} />
           </div>
           <footer>
             <span>WINTER</span>
@@ -256,6 +264,7 @@ import IconAward from '@/components/icons/IconAward.vue';
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      gap: 1.2rem;
 
       @include wide {
         width: 50%;
@@ -271,24 +280,25 @@ import IconAward from '@/components/icons/IconAward.vue';
         color: var(--accent);
         background: rgba(var(--white), 0.8);
         border-bottom: 1px solid var(--accent);
-        margin-bottom: 0.9375rem;
         display: inline-block;
       }
 
-      h1 {
-        font-size: 2.8rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        color: var(--text-1);
+      h1 span {
+        &:first-child {
+          font-size: 2.8rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          color: var(--text-1);
+        }
 
-        span {
+        &:last-child {
           display: block;
           font-family: 'Montserrat', sans-serif;
           font-size: 1.2rem;
           font-weight: 300;
           color: var(--blue-1);
           letter-spacing: 0.3em;
-          margin-top: 5px;
+          margin: 1rem 0.3rem 0 0.3rem;
         }
       }
     }
@@ -381,16 +391,11 @@ import IconAward from '@/components/icons/IconAward.vue';
         width: 100%;
         display: grid;
         grid-template-columns: 1fr;
-        gap: 15px;
-
-        @include wide {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 20px 30px;
-        }
+        gap: 1rem;
 
         div {
           border-bottom: 2px dashed var(--blue-1);
-          padding-bottom: 10px;
+          padding-bottom: 0.2rem;
           display: flex;
           justify-content: space-between;
           align-items: center;

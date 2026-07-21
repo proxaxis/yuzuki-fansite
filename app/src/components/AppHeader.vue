@@ -61,7 +61,7 @@ watch(
     <nav :class="{ active: isMenuOpen }">
       <ul>
         <li><a href="/#hero" @click="handleNavClick">HOME</a></li>
-        <li><a href="/#certification" @click="handleNavClick">CERTIFICATION</a></li>
+        <li><a href="/#certification" @click="handleNavClick">CERT</a></li>
         <li><a href="/#profile" @click="handleNavClick">PROFILE</a></li>
         <li><a href="/#gallery" @click="handleNavClick">GALLERY</a></li>
         <li><a href="/#sns" @click="handleNavClick">CONNECT</a></li>

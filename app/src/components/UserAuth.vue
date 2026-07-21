@@ -2,14 +2,51 @@
 import { ref, onMounted } from 'vue';
 import { createAuth0Client } from '@auth0/auth0-spa-js';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import IconCheck from '@/components/icons/IconCheck.vue';
-import IconXMark from '@/components/icons/IconXMark.vue';
 import IconGoogle from '@/components/icons/IconGoogle.vue';
 
 const isLoading = ref(true);
 const errorMsg = ref('');
 const user = ref(null);
 let auth0Client = null;
+
+const login = async () => {
+  await auth0Client.loginWithRedirect();
+};
+
+const signup = async () => {
+  await auth0Client.loginWithRedirect({
+    authorizationParams: { screen_hint: 'signup' },
+  });
+};
+
+const logout = async () => {
+  await auth0Client.logout({
+    logoutParams: { returnTo: window.location.origin + '/member' },
+  });
+};
+
+const sendData = async () => {
+  isLoading.value = true;
+
+  try {
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: user.value.name,
+        email: user.value.email,
+      }),
+    });
+
+    await response.json();
+  } catch (error) {
+    console.error('送信エラー:', error);
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 onMounted(async () => {
   try {
@@ -33,6 +70,7 @@ onMounted(async () => {
 
     if (await auth0Client.isAuthenticated()) {
       user.value = await auth0Client.getUser();
+      await sendData();
     }
   } catch (e) {
     errorMsg.value = e.message;
@@ -40,22 +78,6 @@ onMounted(async () => {
     isLoading.value = false;
   }
 });
-
-const login = async () => {
-  await auth0Client.loginWithRedirect();
-};
-
-const signup = async () => {
-  await auth0Client.loginWithRedirect({
-    authorizationParams: { screen_hint: 'signup' },
-  });
-};
-
-const logout = async () => {
-  await auth0Client.logout({
-    logoutParams: { returnTo: window.location.origin + '/member' },
-  });
-};
 </script>
 
 <template>
@@ -70,14 +92,23 @@ const logout = async () => {
         あなたのメールアドレスは <span>{{ user.email }}</span> です<br />
         連絡をお待ちください！
       </p>
+      <p>
+        你好，{{ user.name }}！<br />
+        您的電子郵件地址是 {{ user.email }}<br />
+        請靜候我們的通知！
+      </p>
       <button @click="logout">LOGOUT</button>
     </div>
 
     <div v-if="!isLoading && !errorMsg && !user">
       <p>
         こんにちは<br />
-        LOGIN または SIGNUP をしてださい<br />
+        Google で LOGIN または SIGNUP をしてください<br />
         あなたのメールボックスに情報を配信します！
+      </p>
+      <p>
+        你好！<br />
+        請登入或註冊 Google 帳戶，我們將會把資訊傳送到您的電子郵箱！
       </p>
       <button @click="signup"><IconGoogle size="1.2rem" /><span>SIGNUP</span></button>
       <button @click="login"><IconGoogle size="1.2rem" /><span>LOGIN</span></button>

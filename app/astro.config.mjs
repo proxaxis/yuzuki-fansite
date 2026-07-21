@@ -11,4 +11,14 @@ export default defineConfig({
   server: {
     port: 8001,
   },
+  i18n: {
+    defaultLocale: "ja",
+    locales: ["ja", "yue"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+    fallback: {
+      yue: "ja",
+    },
+  },
 });
